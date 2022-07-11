@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from TourApp.models import Park_bookings,Hotels_bookings,category,hotels,status,users,tourguide,destinations
+from TourApp.models import Park_bookings,Hotels_bookings,category,hotels,status,users,tourguide,destinations,cart
 # Register your models here.
 
 admin.site.register(Hotels_bookings )
@@ -11,3 +11,5 @@ admin.site.register( status)
 # admin.site.register( users)
 admin.site.register( tourguide)
 admin.site.register(destinations)
+admin.site.register(cart)
+

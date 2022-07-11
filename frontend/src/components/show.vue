@@ -6,7 +6,7 @@
       </div>
       <div class="row">
           <!-- first row  -->
-           <div class="row" v-for="data in info " :key="data.destinationId">
+          <div class="row" v-for="data in info " :key="data.destinationId">
               <div class="col-md-6 col-lg-6">
                   <!-- Image to be used here -->
                   <img :src="data.imageurl" alt="" size="34*34">
@@ -23,7 +23,7 @@
                        <h4>Rating : {{data.rating}}/5</h4>
                    </div>
                 
-                   <button class="about-view packages-btn pull-right"  @click="addToCart" style="position:relative; vertical-align: bottom;">
+                   <button class="about-view packages-btn pull-right"  @click="message" style="position:relative; vertical-align: bottom;">
                                                 Add to cart 
                                             </button>
               </div>
@@ -72,7 +72,7 @@
 import axios from 'axios';
 import FlashMessage from '@smartweb/vue-flash-message';
 export default {
-    name: 'desc',
+    name: 'show',
     data(){
         return{
             info : '',
@@ -90,12 +90,11 @@ export default {
                             }
                         });
         },
-         getData(id){
-            let url = 'destinations/'
+        getData(id){
+            let url = 'hotels/'
             axios.get(url+id+'/').then(res=>{
                     this.info =  res.data
-                    this.id = res.data[0].destinationId
-
+                    this.id = res.data[0].hotelId
             }).catch(err=>{
 
             }
@@ -104,15 +103,11 @@ export default {
         },
         addToCart(){
             axios.post('user/cart/', {
-    "user": 1,
-    "park": this.id
-    })
-    
+    "user": this.$store.state.user,
+    "hotel": this.id
+})
+        },
     },
-
-    
-
-},
      mounted(){
         this.getData(this.$route.params.id)
     }
@@ -123,9 +118,6 @@ export default {
 p{
     vertical-align: middle;
     float: left;
-}
-i{
-    padding-right: 20px;
 }
 #experiences{
     padding-top: 70px;

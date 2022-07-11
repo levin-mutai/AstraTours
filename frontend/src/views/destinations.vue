@@ -15,7 +15,7 @@
                             <div class="col-md-3 col-sm-4" v-for="data in info" :key="data.photo" >
                             
                                <!-- <a href="#"> -->
-                                    <div class="single-package-item" @click="$router.push({ path: '/desc/1' })" >
+                                    <div class="single-package-item" @click="$router.push({ path: '/desc/'+id+'/' })" >
                                     <img :src="data.imageurl" alt="package-place">
                                     <div class="single-package-item-txt">
                                         <h3 class='name'>{{data.name}} </h3>
@@ -92,6 +92,7 @@ export default {
         return {
             info : null,
             showModal: false,
+            id : '',
         }
     },
     // components: {
@@ -117,9 +118,10 @@ export default {
 
     methods: {
         refreshData(){
-            axios.get('http://localhost:8000/Destinations')
-            .then((response)=>{
-                this.info=response.data
+            axios.get('http://localhost:8000/destinations/')
+            .then(res=>{
+                this.info=res.data
+                this.id = res.data[0].destinationId
             });
         },
         

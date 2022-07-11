@@ -30,6 +30,23 @@ class DetailDestination(generics.RetrieveUpdateDestroyAPIView):
     queryset = destinations.objects.all()
     serializer_class= destinationsSerializer
 
+class DestinationView(viewsets.ModelViewSet):
+    '''
+    A class to list all the Destinations listed and also sngly identify a destinaon using a destion id 
+    '''
+    print('has been')
+    serializer_class= destinationsSerializer
+
+    def get_queryset(self):
+        specific_destination = destinations.objects.all()
+        return specific_destination
+
+    def retrieve(self,request, *args, **kwargs):
+        params = kwargs
+        queryset = destinations.objects.filter(destinationId = params['pk'])
+        serializer = destinationsSerializer(queryset, many=True)
+        return Response(serializer.data)
+
 class ListTourGuide(generics.ListCreateAPIView):
     queryset = tourguide.objects.all()
     serializer_class = tourguideSerializer
@@ -40,9 +57,23 @@ class DetailTourGuide(generics.RetrieveUpdateDestroyAPIView):
 class ListHotel(generics.ListCreateAPIView):
     queryset = hotels.objects.all()
     serializer_class = hotelsSerializer
-class DetailHotel(generics.RetrieveUpdateDestroyAPIView):
-    queryset = hotels.objects.all()
+
+class DetailHotel(viewsets.ModelViewSet):
+    '''
+    A class to list all the hotels listed and also singly identify a hotel using a  hotelid 
+    '''
     serializer_class= hotelsSerializer
+
+    def get_queryset(self):
+        specific_hotel = hotels.objects.all()
+        return specific_hotel
+
+    def retrieve(self,request, *args, **kwargs):
+        params = kwargs
+        queryset = hotels.objects.filter(hotelId = params['pk'])
+        serializer = hotelsSerializer(queryset, many=True)
+        return Response(serializer.data)
+
 
 class ListCategory(generics.ListCreateAPIView):
     queryset = category.objects.all()

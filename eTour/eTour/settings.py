@@ -68,7 +68,11 @@ CORS_ORIGIN_WHITELIST = (
   'http://localhost:8081'
 )
 ROOT_URLCONF = 'eTour.urls'
-
+APPEND_SLASH = True
+ALLOWED_HOSTS = [
+    'localhost',
+    '127.0.0.1',
+    ]
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',

@@ -13,7 +13,7 @@
 					<div class="row">
                         <!-- <div v-for="data in info" :key="data.photo"> -->
                             <div class="col-md-3 col-sm-4" v-for="data in info" :key="data.photo">
-                                <div class="single-package-item" @click="$router.push({ path: '/desc' })">
+                                <div class="single-package-item" @click="$router.push({ path: '/show' })">
                                     <img :src="data.imageurl" alt="package-place">
                                     <div class="single-package-item-txt">
                                         <h3 class='name'>{{data.name}} </h3>
@@ -97,7 +97,7 @@ export default {
     },
     methods: {
        async refreshData(){
-           await axios.get('http://localhost:8000/hotels')
+           await axios.get('http://localhost:8000/hotels/')
             .then((response)=>{
                 this.info=response.data
             });
