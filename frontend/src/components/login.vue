@@ -35,6 +35,8 @@
 </template>
 
 <script>
+import miniToastr from 'mini-toastr'
+miniToastr.init()
 import axios from 'axios'
 export default {
     name: 'login',
