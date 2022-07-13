@@ -13,7 +13,7 @@
     <label for="psw"><b> <i class="fa fa-key" aria-hidden="true"> Password</i> </b></label>
     <input type="password" placeholder="Enter Password" name="psw" required v-model="password">
 
-    <button type="submit">Login</button>
+    <button type="submit" @click="login">Login</button>
     <label>
       <input type="checkbox" checked="checked" name="remember"> Remember me
     </label>
@@ -35,6 +35,7 @@
 </template>
 
 <script>
+import axios from 'axios'
 export default {
     name: 'login',
     data() {
@@ -45,13 +46,37 @@ export default {
     },
     methods: {
         login(){
-            this.$axios.post('http://localhost:8000/auth/',{
-                username : this.username,
-                password : this.password
+            axios.post('http://127.0.0.1:8000/api/token/',{
+                "username" : this.username,
+                "password" : this.password
             })
-            .then((response)=>{
-                console.log(response.data)
-            }).catch(err => console.log(err))
+            .then(Response=>{
+                const token = Response.data.access
+                const refresh_token = Response.data.refresh
+                axios.defaults.headers.common['Authorization'] = 'Bearer ' + token
+
+                this.$store.commit('setToken', Response.data.refresh)
+                // localStorage.setItem('token', token)
+                sessionStorage.setItem('access', token)
+                sessionStorage.setItem('refresh', refresh_token)
+                   this.$router.push("/");
+                
+                // axios.get('/api/v1/users/me/').then(res=>{
+                //    this.$store.commit('setUser', res.data.name)
+                //    sessionStorage.setItem('clientid', res.data.clientid)
+                //    sessionStorage.setItem('userid', res.data.id)
+                //    this.$store.commit('setUserid', res.data.id)
+                   
+                //    this.$store.commit('setEmail', res.data.email)
+                //    this.$store.commit('setClientid', res.data.clientid)
+                //    this.$store.commit('setPhone', res.data.phoneNumber)
+                //    this.$router.push("/dashboard");
+                // }).catch(err=>{
+                //     console.log('Fetching user data : ',err)
+                // })
+            }).catch(err=>{
+                miniToastr.error("Wrong creds Please check and try agin", "Incorrect creds/Poor Connection", 2000)
+            })
         }
     },
 }
