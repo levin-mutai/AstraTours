@@ -38,6 +38,7 @@
                             <p class="card-text">{{data.description}}</p>
                             <!-- <a href="#" class="btn btn-primary">Go somewhere</a> -->
                             <br>
+                            
                             <button class="about-view packages-btn pull-right" id="show-modal" style="position:relative; vertical-align: bottom;width: 130px; background-color:#16161d ; border: none;" @click="checkOut(data);showModal = true;">
                                                 <small><b>checkout</b>(KSH {{data.price }})</small>
                                             </button>
@@ -65,7 +66,8 @@
             <template #body>
                 
                     <div class="input-group">
-                    <span class="input-group-text">Email and Phonenumber</span>
+                    <!-- <span class="input-group-text">Email and Phonenumber</span> -->
+                    <h3>Confirm Bookings</h3>
                     <!-- <input type="email" aria-label="Email" class="form-control" placeholder="email@gmail.com" required v-model="email">
                     <input type="tel" aria-label="Phone number" class="form-control" placeholder="phone number" required v-model="tel"> -->
                 </div>
@@ -80,6 +82,9 @@
                 </div> -->
                 <!-- </form> -->
             </template>
+            <button class="about-view packages-btn " id="show-modal" style="position:relative; vertical-align: bottom;width: 130px; background-color:#16161d ; border: none;" @click="showModal = true;">
+                                                <small><b>cancel</b></small>
+                                            </button>
             <template #btn-name >
                 Book
             </template>

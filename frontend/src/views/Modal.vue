@@ -25,6 +25,10 @@ export default {
 
           <div class="modal-footer">
             <slot name="footer">
+              <button
+                class="modal-default-button"
+                @click="$emit('close')"
+              style="width:90px;height:40px;border:none; background-color: black; color: white; border-radius: 7px;" ><slot name="btn-cancel">Cancel</slot></button>
               
               <button
                 class="modal-default-button"
