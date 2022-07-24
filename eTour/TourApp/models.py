@@ -88,7 +88,7 @@ class Park_bookings(models.Model):
     userID = models.ForeignKey(Accounts, on_delete=models.DO_NOTHING)
     email = models.EmailField()
     contact = models.CharField(max_length=100)
-    tourguideId = models.ForeignKey(tourguide, on_delete=models.DO_NOTHING,blank=True,null=True)
+    # tourguideId = models.ForeignKey(tourguide, on_delete=models.DO_NOTHING,blank=True,null=True)
     destinationId= models.ForeignKey(destinations,  on_delete=models.DO_NOTHING)
     bill = models.PositiveIntegerField() 
     # state = models.Choices() #active,cancelled,Visited
@@ -98,7 +98,7 @@ class Hotels_bookings(models.Model):
     userID = models.ForeignKey(Accounts, on_delete=models.DO_NOTHING)
     email = models.EmailField()
     contact = models.CharField(max_length=100)
-    tourguideId = models.ForeignKey(tourguide, on_delete=models.DO_NOTHING,blank=True,null=True)
+    # tourguideId = models.ForeignKey(tourguide, on_delete=models.DO_NOTHING,blank=True,null=True)
     from_date= models.DateField(default=timezone.now)
     to_date= models.DateField( )
     hotel = models.ForeignKey(hotels,  on_delete=models.DO_NOTHING)

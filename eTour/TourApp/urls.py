@@ -1,9 +1,9 @@
 from django import urls
 from django.conf.urls import *
 from TourApp.views import *
-from django.urls import path,include
+from django.urls import path,include,re_path
 from django.contrib import admin
-from .routers import h_bookings,p_bookings, cart_router,destination,hotel
+from .routers import h_bookings,p_bookings, cart_router,destination,hotel,cart_modify,cart_items
 
 
 
@@ -29,10 +29,13 @@ urlpatterns = [
     path('user/', include(p_bookings.urls)),
 
     path('user/',include(cart_router.urls)),
+    path('',include(cart_modify.urls)),
+    path('', include(cart_items.urls)),
+
 
     path('', include(destination.urls)),
 
     path('', include(hotel.urls)),
-
+   
 ]
 

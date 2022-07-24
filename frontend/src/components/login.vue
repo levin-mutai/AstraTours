@@ -61,21 +61,21 @@ export default {
                 // localStorage.setItem('token', token)
                 sessionStorage.setItem('access', token)
                 sessionStorage.setItem('refresh', refresh_token)
-                   this.$router.push("/");
+                  //  this.$router.push("/");
                 
-                // axios.get('/api/v1/users/me/').then(res=>{
-                //    this.$store.commit('setUser', res.data.name)
-                //    sessionStorage.setItem('clientid', res.data.clientid)
-                //    sessionStorage.setItem('userid', res.data.id)
-                //    this.$store.commit('setUserid', res.data.id)
+                axios.get('/auth/users/me/').then(res=>{
+                   this.$store.commit('setUser', res.data.firstname+' '+res.data.lastname)
+                  //  sessionStorage.setItem('clientid', res.data.clientid)
+                   sessionStorage.setItem('userid', res.data.id)
+                   this.$store.commit('setUserid', res.data.id)
                    
-                //    this.$store.commit('setEmail', res.data.email)
-                //    this.$store.commit('setClientid', res.data.clientid)
-                //    this.$store.commit('setPhone', res.data.phoneNumber)
-                //    this.$router.push("/dashboard");
-                // }).catch(err=>{
-                //     console.log('Fetching user data : ',err)
-                // })
+                   this.$store.commit('setEmail', res.data.email)
+                   this.$store.commit('setClientid', res.data.clientid)
+                   this.$store.commit('setPhone', res.data.contact)
+                   this.$router.go(-1)
+                }).catch(err=>{
+                    console.log('Fetching user data : ',err)
+                })
             }).catch(err=>{
                 miniToastr.error("Wrong creds Please check and try agin", "Incorrect creds/Poor Connection", 2000)
             })

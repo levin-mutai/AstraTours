@@ -39,12 +39,16 @@
                             <!-- <a href="#" class="btn btn-primary">Go somewhere</a> -->
                             <br>
                             <button class="about-view packages-btn pull-right" id="show-modal" style="position:relative; vertical-align: bottom;width: 130px; background-color:#16161d ; border: none;" @click="checkOut(data);showModal = true;">
-                                                <small><b>checkout</b> (KSH {{data.price}})</small>
+                                                <small><b>checkout</b>(KSH {{data.price }})</small>
                                             </button>
                         </div>
   
                     </div>
+                    
                 </div>
+                <button class="about-view packages-btn pull-right" id="show-modal" style="position:relative; vertical-align: bottom;width: 130px; background-color:#16161d ; border: none;">
+                                                <small><b>Clear Cart </b></small>
+                                            </button>
 
         <!-- <div class="col-md-3 col-lg-3">
             <button type="button" class="btn btn-primary btn-lg">CHECKOUT({{bill}})</button>
@@ -62,8 +66,8 @@
                 
                     <div class="input-group">
                     <span class="input-group-text">Email and Phonenumber</span>
-                    <input type="email" aria-label="Email" class="form-control" placeholder="email@gmail.com" required v-model="email">
-                    <input type="tel" aria-label="Phone number" class="form-control" placeholder="phone number" required v-model="tel">
+                    <!-- <input type="email" aria-label="Email" class="form-control" placeholder="email@gmail.com" required v-model="email">
+                    <input type="tel" aria-label="Phone number" class="form-control" placeholder="phone number" required v-model="tel"> -->
                 </div>
                 <!-- <div class="input-group mb-5" style="margin-top: 20px;">
                     <select class="form-select" id="inputGroupSelect02" required>
@@ -76,7 +80,7 @@
                 </div> -->
                 <!-- </form> -->
             </template>
-            <template #btn-name @click="alert('levin')">
+            <template #btn-name >
                 Book
             </template>
 
@@ -104,7 +108,10 @@ export default {
             bill: '',
             showModal: false,
             tel : '',
-            email: ''
+            email: '',
+            price: 0,
+            userid: this.$store.state.userid,
+            token: this.$store.state.refresh,
 
         }
     },
@@ -114,7 +121,7 @@ export default {
     },
     methods:{
         fetchall(){
-            let userid = this.$store.state.user
+            let userid = this.$store.state.userid
             axios.get('user/cart/'+userid+'/').then(res=>{
                 this.items = res.data
                 this.check(this.items)
@@ -125,6 +132,8 @@ export default {
             axios.get(url+id+'/').then(res=>{
                     
                     let a =  res.data
+                    console.log(res.data.price)
+                    this.price = this.price+res.data.price
                     this.info.append(res.data[0])
             }).catch(err=>{
 
@@ -132,12 +141,19 @@ export default {
                 
             )
         },
+        deleteItem(){},
+        checkPrice(){
+            this.info.forEach(element => {
+                this.price += element.price
+            });
+        },
         getPark(id){
             let url = 'destinations/'
             axios.get(url+id+'/').then(res=>{
                     
                     let a =  res.data
                     this.info.push(a[0])
+                    this.checkPrice()
             }).catch(err=>{
 
             }
@@ -158,18 +174,17 @@ export default {
             console.log(this.info)
         },
         checkOut(data){
-
+            console.log(data)
             setTimeout(() => {
-                if (data.park == 1) {
+                if (data.park!='') {
                 axios.post('user/park-bookings/',{
-                    "email": "",
-                    "contact": "0768850685",
+                    "email": this.$store.state.email,
+                    "contact": this.$store.state.phonenumber,
                     "bill": data.price,
-                    "userID": this.$store.state.user,
-                    "tourguideId": null,
+                    "userID": this.$store.state.userid,
                     "destinationId": data.destinationId
             },
-            console.log(this.bill,this.destinationId)
+
             ).then(res=>{
                 Swal.fire({
                             title: "Booked",
@@ -177,13 +192,15 @@ export default {
                             icon: 'success',
                             confirmButtonText: 'OK'
                         })
+                axios.delete('cart-item/'+data.id+'/')
+                
             })
             } else {
                  axios.post('user/park-bookings/',{
-                    "email": this.email,
-                    "contact": this.tel,
+                    "email": this.$store.state.email,
+                    "contact": this.$store.state.phonenumber,
                     "bill": data.price,
-                    "userID": this.$store.state.user,
+                    "userID": this.$store.state.userid,
                     "destinationId": data.hotelId
             },
             console.log(this.bill,this.destinationId)
@@ -202,6 +219,24 @@ export default {
 
     mounted(){
         this.fetchall()
+
+        if (this.$store.state.userid==null) {
+            
+            axios.get('/auth/users/me/').then(res=>{
+                   this.$store.commit('setUser', res.data.firstname+' '+res.data.lastname)
+                  //  sessionStorage.setItem('clientid', res.data.clientid)
+                   sessionStorage.setItem('userid', res.data.id)
+                   this.$store.commit('setUserid', res.data.id)
+                   
+                   this.$store.commit('setEmail', res.data.email)
+                   this.$store.commit('setClientid', res.data.clientid)
+                   this.$store.commit('setPhone', res.data.contact)
+                   alert('runn')
+                }).catch(err=>{
+                    this.$router.push('/login')
+                })
+        }
+
     }
 }
 </script>

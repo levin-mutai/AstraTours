@@ -6,7 +6,9 @@ from .views import (
     Hotel_reservations,
     cartView,
     DestinationView,
-    DetailHotel
+    DetailHotel,
+    cartDeleteUpdateView,
+    deleteCartItem
 )
 
 
@@ -25,3 +27,8 @@ destination.register('destinations', DestinationView, basename= 'destinations')
 hotel = routers.DefaultRouter()
 hotel.register('hotels', DetailHotel , basename='listed_hotels')
 
+cart_modify = routers.DefaultRouter()
+cart_modify.register('m-cart',cartDeleteUpdateView,basename= 'Delete-Update-Cart')
+
+cart_items = routers.DefaultRouter()
+cart_items.register('d-cart',deleteCartItem, basename= 'delete-cartItems')

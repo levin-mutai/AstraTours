@@ -95,6 +95,7 @@ class park_reservations(viewsets.ModelViewSet):
     Used to store all the list of Game park/reserves booking made
     '''
     serializer_class = Park_bookingSerializer
+
     
     def get_queryset(self):
         specific_booking = Park_bookings.objects.all()
@@ -146,5 +147,36 @@ class cartView(viewsets.ModelViewSet):
         serializer = cartSerializer(queryset, many=True)
         return Response(serializer.data)
 
+class cartDeleteUpdateView(viewsets.ModelViewSet):
+    '''
+    To delete Add and modify all the items in the cart or atleast one element
+    '''
+    serializer_class = cartSerializer
 
-    
+    def get_queryset(self):
+        specific_booking = cart.objects.all()
+        return specific_booking
+
+    def retrieve(self,request, *args, **kwargs):
+        params = kwargs
+        queryset = cart.objects.filter(id = params['pk'])
+        serializer = cartSerializer(queryset, many=True)
+        return Response(serializer.data)
+
+class deleteCartItem(viewsets.ModelViewSet):
+    serializer_class = cartSerializer
+   
+    def get_queryset(self):
+        specific_booking = cart.objects.all()
+        return specific_booking
+
+    def retrieve(self,request, *args, **kwargs):
+        params = kwargs
+        queryset = cart.objects.filter(user= params['pk'])
+        serializer = cartSerializer(queryset, many=True)
+        return Response(serializer.data)
+
+
+    # def get_queryset(self):
+    #     id = self.kwargs.get('user')
+    #     return cart.objects.filter( user=int(id)) 
